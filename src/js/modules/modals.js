@@ -1,4 +1,4 @@
-const modals = () => {
+const modals = (state) => {
   const windows = document.querySelectorAll("[data-modal]");
   function bindModal(
     triggerSelector,
@@ -16,29 +16,56 @@ const modals = () => {
       });
     };
 
+    const showStatusMessage = (mess, item) => {
+      const statusMessage = document.createElement("div");
+      statusMessage.classList.add("status");
+      item.appendChild(statusMessage);
+      statusMessage.textContent = mess;
+      setTimeout(() => {
+        statusMessage.style.display = "none";
+      }, 3000);
+    };
+
     trigger.forEach((item) => {
       item.addEventListener("click", (e) => {
         if (e.target) {
           e.preventDefault();
         }
-        closeAllModals();
-        modal.style.display = "block";
-        document.body.style.overflow = "hidden";
-        //document.body.classList.add("modal-open");
+        //closeAllModals();
+        switch (item.getAttribute("data-trigger")) {
+          case "calc":
+            if (state.form && state.width && state.height) {
+              closeAllModals();
+              modal.style.display = "block";
+              document.body.style.overflow = "hidden";
+            } else {
+              showStatusMessage("Введіть данні", item);
+            }
+            break;
+          case "profile":
+            if (state.type && state.profile) {
+              closeAllModals();
+              modal.style.display = "block";
+              document.body.style.overflow = "hidden";
+            } else {
+              showStatusMessage("Введіть данні", item);
+            }
+            break;
+          default:
+            closeAllModals();
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+        }
       });
     });
     close.addEventListener("click", () => {
-      //modal.style.display = "none";
       closeAllModals();
       document.body.style.overflow = "";
-      //document.body.classList.remove("modal-open");
     });
     modal.addEventListener("click", (e) => {
       if (e.target === modal && closeClickOverlay) {
-        //modal.style.display = "none";
         closeAllModals();
         document.body.style.overflow = "";
-        //document.body.classList.remove("modal-open");
       }
     });
   }

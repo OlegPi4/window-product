@@ -1,6 +1,12 @@
-import { closeAllModals } from "./modals";
-
 const forms = (state) => {
+  const windows = document.querySelectorAll("[data-modal]");
+
+  const closeAllModals = () => {
+    windows.forEach((item) => {
+      item.style.display = "none";
+    });
+  };
+
   const form = document.querySelectorAll("form"),
     inputs = document.querySelectorAll("input"),
     phoneInputs = document.querySelectorAll('input[name="user_phone"]');
@@ -50,16 +56,16 @@ const forms = (state) => {
         .then((res) => {
           console.log(res);
           statusMessage.textContent = message.success;
-          setTimeout(() => {
-            state = {};
-          }, 5000);
+          state = {};
+          console.log(state);
         })
         .catch(() => (statusMessage.textContent = message.failure))
         .finally(() => {
           clearInputs();
           setTimeout(() => {
             statusMessage.remove();
-          }, 5000);
+            closeAllModals();
+          }, 3000);
         });
     });
   });

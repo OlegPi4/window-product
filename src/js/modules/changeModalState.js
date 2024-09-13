@@ -32,7 +32,6 @@ const changeModalState = (state) => {
             break;
           default:
         }
-        console.log(state);
       });
     });
   }
