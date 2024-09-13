@@ -57,7 +57,6 @@ const forms = (state) => {
           console.log(res);
           statusMessage.textContent = message.success;
           state = {};
-          console.log(state);
         })
         .catch(() => (statusMessage.textContent = message.failure))
         .finally(() => {

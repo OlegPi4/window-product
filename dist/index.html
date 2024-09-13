@@ -837,7 +837,7 @@
         </div>
         <div class="col-sm-4 col-xs-12">
           <div class="logo">
-            <img src="assets/img/header/logo.png" alt="#">
+            <img src="assets/img/header/pngwing.com.png " width="100" height="60" alt="#">
           </div>
         </div>
         <div class="col-sm-4 col-sm-pull-8 col-xs-12">
@@ -850,7 +850,7 @@
 
   <!-- Modals -->
   <!-- Request a call -->
-  <div class="popup">
+  <div class="popup" data-modal>
     <div class="popup_dialog">
       <div class="popup_content text-center">
         <button type="button" class="popup_close"><strong>&times;</strong></button>
@@ -869,7 +869,7 @@
   </div>
 
   <!-- Request an engineer -->
-  <div class="popup_engineer">
+  <div class="popup_engineer" data-modal>
     <div class="popup_dialog">
       <div class="popup_content text-center">
         <button type="button" class="popup_close"><strong>&times;</strong></button>
@@ -888,14 +888,14 @@
   </div>
 
   <!-- Calculator -->
-  <div class="popup_calc">
+  <div class="popup_calc" data-modal>
     <div class="popup_dialog">
       <div class="popup_calc_content text-center">
         <button type="button" class="popup_calc_close"><strong>&times;</strong></button>
         <h2>Калькулятор</h2>
         <h3>Выберіть форму балкону <br>та вкажіть размір</h3>
         <div class="balcon_icons">
-          <span class="balcon_icons_img do_image_more">
+          <span class="balcon_icons_img">
             <img src="assets/img/modal_calc/balkon/ba_01.png" alt="Тип1"></span>
           <span class="balcon_icons_img">
             <img src="assets/img/modal_calc/balkon/ba_02.png" alt="Тип2"></span>
@@ -915,21 +915,22 @@
         <div class="multiplication"><strong>&times;</strong></div>
         <input class="form-control" id="height" type="text" placeholder="Высота" required>
         <label for="height">мм</label>
-        <button class="button popup_calc_button">Далі</button>
+        <button class="button popup_calc_button" data-trigger="calc">Далі</button>
       </div>
     </div>
   </div>
 
-  <div class="popup_calc_profile">
+  <div class="popup_calc_profile" data-modal>
     <div class="popup_dialog">
       <div class="popup_calc_profile_content text-center">
         <button type="button" class="popup_calc_profile_close"><strong>&times;</strong></button>
         <h2>Калькулятор</h2>
         <h3>Выберіть тип скління <br>та його профіль</h3>
         <select class="form-control" name="view" id="view_type">
+          <option>Виберіть тип скління</option>
           <option value="tree">Дерев'яне скління</option>
-          <option value="aluminum">Алюмінієве скліня</option>
-          <option value="plastic">Склінн пластиковими рамами</option>
+          <option value="aluminum">Алюмінієве скління</option>
+          <option value="plastic">Скління пластиковими рамами</option>
           <option value="french">Панорамное скління</option>
           <option value="overhang">Скління з виносом</option>
         </select>
@@ -946,18 +947,18 @@
           <span class="label">Тепле</span>
         </label>
 
-        <button class="button popup_calc_profile_button">Далі</button>
+        <button class="button popup_calc_profile_button" data-trigger="profile">Далі</button>
       </div>
     </div>
   </div>
 
-  <div class="popup_calc_end">
+  <div class="popup_calc_end" data-modal>
     <div class="popup_dialog">
       <div class="popup_content text-center">
         <button type="button" class="popup_calc_end_close"><strong>&times;</strong></button>
         <div class="popup_form">
-          <form class="form" action="#">
-            1<h2>Дякуємо за звернення! <br>Залиште свої данні</h2>
+          <form class="form" action="#" data-calc="end">
+            <h2>Дякуємо за звернення! <br>Залиште свої данні</h2>
             <input class="form-control form_input" name="user_name" required type="text"
               placeholder="Введіть ваше ім'я">
             <input class="form-control form_input" name="user_phone" required type="text" placeholder="Введыть телефон">
