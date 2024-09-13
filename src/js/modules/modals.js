@@ -10,11 +10,11 @@ const modals = () => {
       modal = document.querySelector(modalSelector),
       close = document.querySelector(closeSelector);
 
-    function closeAllModals() {
+    const closeAllModals = () => {
       windows.forEach((item) => {
         item.style.display = "none";
       });
-    }
+    };
 
     trigger.forEach((item) => {
       item.addEventListener("click", (e) => {
