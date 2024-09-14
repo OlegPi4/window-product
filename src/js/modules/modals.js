@@ -1,3 +1,5 @@
+import calcScroll from "./calcScroll";
+
 const modals = (state) => {
   const windows = document.querySelectorAll("[data-modal]");
   function bindModal(
@@ -8,12 +10,21 @@ const modals = (state) => {
   ) {
     const trigger = document.querySelectorAll(triggerSelector),
       modal = document.querySelector(modalSelector),
-      close = document.querySelector(closeSelector);
+      close = document.querySelector(closeSelector),
+      scroll = calcScroll();
 
     const closeAllModals = () => {
       windows.forEach((item) => {
         item.style.display = "none";
+        document.body.style.overflow = "";
+        document.body.style.marginRight = "0px";
       });
+    };
+
+    const showModal = () => {
+      modal.style.display = "block";
+      document.body.style.overflow = "hidden";
+      document.body.style.marginRight = `${scroll}px`;
     };
 
     const showStatusMessage = (mess, item) => {
@@ -36,8 +47,7 @@ const modals = (state) => {
           case "calc":
             if (state.form && state.width && state.height) {
               closeAllModals();
-              modal.style.display = "block";
-              document.body.style.overflow = "hidden";
+              showModal();
             } else {
               showStatusMessage("Введіть данні", item);
             }
@@ -45,27 +55,23 @@ const modals = (state) => {
           case "profile":
             if (state.type && state.profile) {
               closeAllModals();
-              modal.style.display = "block";
-              document.body.style.overflow = "hidden";
+              showModal();
             } else {
               showStatusMessage("Введіть данні", item);
             }
             break;
           default:
             closeAllModals();
-            modal.style.display = "block";
-            document.body.style.overflow = "hidden";
+            showModal();
         }
       });
     });
     close.addEventListener("click", () => {
       closeAllModals();
-      document.body.style.overflow = "";
     });
     modal.addEventListener("click", (e) => {
       if (e.target === modal && closeClickOverlay) {
         closeAllModals();
-        document.body.style.overflow = "";
       }
     });
   }
@@ -74,6 +80,7 @@ const modals = (state) => {
     setTimeout(() => {
       document.querySelector(selector).style.display = "block";
       document.body.style.overflow = "hidden";
+      document.body.style.marginRight = `${scroll}px`;
     }, time);
   }
 
@@ -103,7 +110,7 @@ const modals = (state) => {
     false
   );
 
-  showModalByTime(".popup", 60000);
+  showModalByTime(".popup", 10000);
   addClassesAnimation();
 };
 

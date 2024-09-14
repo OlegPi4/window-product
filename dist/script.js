@@ -1,6 +1,32 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/js/modules/calcScroll.js":
+/*!**************************************!*\
+  !*** ./src/js/modules/calcScroll.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const calcScroll = () => {
+  let div = document.createElement("div");
+  div.style.overflowY = "scroll";
+  div.style.height = "50px";
+  div.style.width = "50px";
+  div.style.visibility = "hidden";
+  document.body.appendChild(div);
+  let scrollWidth = div.offsetWidth - div.clientWidth;
+  div.remove();
+  return scrollWidth;
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (calcScroll);
+
+/***/ }),
+
 /***/ "./src/js/modules/changeModalState.js":
 /*!********************************************!*\
   !*** ./src/js/modules/changeModalState.js ***!
@@ -132,6 +158,60 @@ const forms = state => {
 
 /***/ }),
 
+/***/ "./src/js/modules/images.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/images.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _calcScroll__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./calcScroll */ "./src/js/modules/calcScroll.js");
+
+const images = () => {
+  // создание модального окна
+  const imgPopup = document.createElement("div"),
+    workSection = document.querySelector(".works"),
+    bigImage = document.createElement("img"),
+    scroll = (0,_calcScroll__WEBPACK_IMPORTED_MODULE_0__["default"])();
+  imgPopup.classList.add("popup_bigImg");
+  workSection.appendChild(imgPopup);
+  imgPopup.style.justifyContent = "center";
+  imgPopup.style.alignItems = "center";
+  imgPopup.style.display = "none";
+  imgPopup.appendChild(bigImage);
+  bigImage.style.maxWidth = "100%";
+  bigImage.style.height = "auto";
+  bigImage.style.marginLeft = "2rem";
+  bigImage.style.paddingRight = "2rem";
+  bigImage.classList.add("faded");
+  // добавление события на кнопку закрытия модального окна
+  workSection.addEventListener("click", e => {
+    e.preventDefault();
+    let target = e.target;
+    // поиск картинки, на которую кликнули
+    if (target && target.classList.contains("preview")) {
+      imgPopup.style.display = "flex";
+      document.body.style.overflow = "hidden";
+      document.body.style.marginRight = `${scroll}px`;
+      const path = target.parentNode.getAttribute("href");
+      bigImage.setAttribute("src", path);
+    }
+    // нажатие на подложку
+    if (target && target.matches("div.popup_bigImg")) {
+      imgPopup.style.display = "none";
+      document.body.style.overflow = "";
+      document.body.style.marginRight = "0px";
+    }
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (images);
+
+/***/ }),
+
 /***/ "./src/js/modules/modals.js":
 /*!**********************************!*\
   !*** ./src/js/modules/modals.js ***!
@@ -143,17 +223,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _calcScroll__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./calcScroll */ "./src/js/modules/calcScroll.js");
+
 const modals = state => {
   const windows = document.querySelectorAll("[data-modal]");
   function bindModal(triggerSelector, modalSelector, closeSelector) {
     let closeClickOverlay = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
     const trigger = document.querySelectorAll(triggerSelector),
       modal = document.querySelector(modalSelector),
-      close = document.querySelector(closeSelector);
+      close = document.querySelector(closeSelector),
+      scroll = (0,_calcScroll__WEBPACK_IMPORTED_MODULE_0__["default"])();
     const closeAllModals = () => {
       windows.forEach(item => {
         item.style.display = "none";
+        document.body.style.overflow = "";
+        document.body.style.marginRight = "0px";
       });
+    };
+    const showModal = () => {
+      modal.style.display = "block";
+      document.body.style.overflow = "hidden";
+      document.body.style.marginRight = `${scroll}px`;
     };
     const showStatusMessage = (mess, item) => {
       const statusMessage = document.createElement("div");
@@ -174,8 +264,7 @@ const modals = state => {
           case "calc":
             if (state.form && state.width && state.height) {
               closeAllModals();
-              modal.style.display = "block";
-              document.body.style.overflow = "hidden";
+              showModal();
             } else {
               showStatusMessage("Введіть данні", item);
             }
@@ -183,27 +272,23 @@ const modals = state => {
           case "profile":
             if (state.type && state.profile) {
               closeAllModals();
-              modal.style.display = "block";
-              document.body.style.overflow = "hidden";
+              showModal();
             } else {
               showStatusMessage("Введіть данні", item);
             }
             break;
           default:
             closeAllModals();
-            modal.style.display = "block";
-            document.body.style.overflow = "hidden";
+            showModal();
         }
       });
     });
     close.addEventListener("click", () => {
       closeAllModals();
-      document.body.style.overflow = "";
     });
     modal.addEventListener("click", e => {
       if (e.target === modal && closeClickOverlay) {
         closeAllModals();
-        document.body.style.overflow = "";
       }
     });
   }
@@ -211,6 +296,7 @@ const modals = state => {
     setTimeout(() => {
       document.querySelector(selector).style.display = "block";
       document.body.style.overflow = "hidden";
+      document.body.style.marginRight = `${scroll}px`;
     }, time);
   }
   function addClassesAnimation() {
@@ -223,7 +309,7 @@ const modals = state => {
   bindModal(".popup_calc_btn", ".popup_calc", ".popup_calc_close");
   bindModal(".popup_calc_button", ".popup_calc_profile", ".popup_calc_profile_close", false);
   bindModal(".popup_calc_profile_button", ".popup_calc_end", ".popup_calc_end_close", false);
-  showModalByTime(".popup", 60000);
+  showModalByTime(".popup", 10000);
   addClassesAnimation();
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (modals);
@@ -14262,6 +14348,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/forms */ "./src/js/modules/forms.js");
 /* harmony import */ var _modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/changeModalState */ "./src/js/modules/changeModalState.js");
 /* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
+/* harmony import */ var _modules_images__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/images */ "./src/js/modules/images.js");
+
 
 
 
@@ -14280,6 +14368,7 @@ window.addEventListener("DOMContentLoaded", () => {
   (0,_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(modalState);
   let deadline = "2024-12-18";
   (0,_modules_timer__WEBPACK_IMPORTED_MODULE_5__["default"])(".container1", deadline);
+  (0,_modules_images__WEBPACK_IMPORTED_MODULE_6__["default"])();
 });
 })();
 
